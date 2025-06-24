@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/images"/>
+    <qresource prefix="/">
+        <file>images/arariboiaLogo.jpg</file>
+        <file>images/bateria.png</file>
+        <file>images/engine-electricity-motor-svgrepo-com.png</file>
+    </qresource>
+</RCC>
