@@ -18,13 +18,25 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     bms_can_manager.cpp \
+    can/bms_can_manager.cpp \
+    can/cancontroller.cpp \
+    can/mavlinkcanmanager.cpp \
+    can/motor_can_manager.cpp \
+    cancontroller.cpp \
     main.cpp \
     mainwindow.cpp \
-    motor_can_manager.cpp
+    motor_can_manager.cpp \
+    oldwindow.cpp
 
 HEADERS += \
     bms_can_manager.h \
+    can/bms_can_manager.h \
+    can/can_manager.h \
+    can/cancontroller.h \
+    can/mavlinkcanmanager.h \
+    can/motor_can_manager.h \
     can_manager.h \
+    cancontroller.h \
     mainwindow.h \
     mavlink/arariboat/arariboat.h \
     mavlink/arariboat/mavlink.h \
@@ -57,10 +69,12 @@ HEADERS += \
     mavlink/mavlink_helpers.h \
     mavlink/mavlink_types.h \
     mavlink/protocol.h \
-    motor_can_manager.h
+    motor_can_manager.h \
+    oldwindow.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    oldwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -71,5 +85,6 @@ RESOURCES += \
     Resources.qrc
 
 DISTFILES += \
+    can/Novo(a) Documento de Texto.txt \
     mavlink/arariboat.xml \
     mavlink/arariboat.xml:Zone.Identifier

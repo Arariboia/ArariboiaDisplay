@@ -18,7 +18,7 @@
 
 static const char* TAG_BMS = "BMS_CAN";
 
-BMSCANManager::BMSCANManager() {
+BMSCANManager::BMSCANManager(QObject *parent) : QObject(parent) {
     initialize_can_handlers();
 }   
 

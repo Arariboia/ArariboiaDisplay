@@ -1,3 +1,6 @@
+#ifndef BMSCANMANAGER_H
+#define BMSCANMANAGER_H
+
 #include <map>
 #include <functional>
 #include <cstdint>
@@ -89,7 +92,7 @@ typedef struct {
 class BMSCANManager : public QObject, public ICANManager {
     Q_OBJECT
 public:
-    BMSCANManager();
+    explicit BMSCANManager(QObject *parent = nullptr);
     bool handle_can_frame(const QCanBusFrame &message) override;
     void poll_bms_data(); // Call this periodically to process BMS 
     void print_can_handlers();
@@ -124,3 +127,5 @@ private:
     static constexpr uint8_t ALL_FLAGS = FLAG_VOLTAGE | FLAG_CHARGE_DISCHARGE | FLAG_STATUS | FLAG_CELL_VOLTAGE | FLAG_TEMPERATURE | FLAG_FAILURE;
     void check_and_publish();
 };
+
+#endif // BMSCANMANAGER_H

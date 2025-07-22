@@ -31,7 +31,7 @@
 
 static const char* TAG = "CAN";
 
-MotorCANManager::MotorCANManager() {
+MotorCANManager::MotorCANManager(QObject *parent) : QObject(parent) {
     initialize_can_handlers();
 }
 
@@ -77,12 +77,12 @@ void MotorCANManager::handle_state_data(const QCanBusFrame &message, motor_state
 
 void MotorCANManager::check_and_publish() {
     if (_received_flags_left == (FLAG_ELECTRICAL | FLAG_STATE)) {
-        emit DataLeftReceived(motor_data_left);
+        emit DataReceived(motor_data_left);
         _received_flags_left = 0; // Reset for next cycle
     }
 
     if (_received_flags_right == (FLAG_ELECTRICAL | FLAG_STATE)) {
-        emit DataRightReceived(motor_data_right);
+        emit DataReceived(motor_data_right);
         _received_flags_right = 0; // Reset for next cycle
     }
 }

@@ -1,3 +1,6 @@
+#ifndef MOTORCANMANAGER_H
+#define MOTORCANMANAGER_H
+
 #include <map>
 #include <functional>
 #include "can_manager.h"
@@ -82,12 +85,11 @@ typedef struct {
 class MotorCANManager : public QObject, public ICANManager {
     Q_OBJECT
 public:
-    MotorCANManager();
+    explicit MotorCANManager(QObject *parent = nullptr);
     bool handle_can_frame(const QCanBusFrame &message) override;
 
 signals:
-    void DataLeftReceived(const motor_data_t &data);
-    void DataRightReceived(const motor_data_t &data);
+    void DataReceived(const motor_data_t &data);
 
 private:
     motor_data_t motor_data_left;
@@ -107,3 +109,5 @@ private:
     static constexpr uint8_t ALL_FLAGS = FLAG_ELECTRICAL | FLAG_STATE;
     void check_and_publish();
 };
+
+#endif // MOTORCANMANAGER_H
