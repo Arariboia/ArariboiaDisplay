@@ -1,5 +1,6 @@
-QT       += core gui
+QT       += core gui widgets
 QT += serialbus
+QT += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,38 +18,34 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    bms_can_manager.cpp \
     can/bms_can_manager.cpp \
     can/cancontroller.cpp \
     can/mavlinkcanmanager.cpp \
     can/motor_can_manager.cpp \
-    cancontroller.cpp \
+    custom_widgets/Qt-Speedometer-Widget/speedometer.cpp \
     main.cpp \
     mainwindow.cpp \
-    motor_can_manager.cpp \
-    oldwindow.cpp
+    networkmanager.cpp \
+    propulsionwindow.cpp \
+    settingsmanager.cpp \
+    settingswindow.cpp \
 
 HEADERS += \
-    bms_can_manager.h \
     can/bms_can_manager.h \
     can/can_manager.h \
     can/cancontroller.h \
     can/mavlinkcanmanager.h \
     can/motor_can_manager.h \
-    can_manager.h \
-    cancontroller.h \
+    custom_widgets/Qt-Speedometer-Widget/speedometer.h \
     mainwindow.h \
     mavlink/arariboat/arariboat.h \
     mavlink/arariboat/mavlink.h \
-    mavlink/arariboat/mavlink_msg_all_info.h \
     mavlink/arariboat/mavlink_msg_bms.h \
     mavlink/arariboat/mavlink_msg_bms_status.h \
     mavlink/arariboat/mavlink_msg_debug.h \
     mavlink/arariboat/mavlink_msg_ezkontrol_mcu_meter_data_i.h \
     mavlink/arariboat/mavlink_msg_ezkontrol_mcu_meter_data_ii.h \
     mavlink/arariboat/mavlink_msg_gps.h \
-    mavlink/arariboat/mavlink_msg_gps_info.h \
-    mavlink/arariboat/mavlink_msg_heartbeat.h \
     mavlink/arariboat/mavlink_msg_instrumentation.h \
     mavlink/arariboat/mavlink_msg_mppt.h \
     mavlink/arariboat/mavlink_msg_mppt_state.h \
@@ -59,7 +56,6 @@ HEADERS += \
     mavlink/arariboat/mavlink_msg_param_value.h \
     mavlink/arariboat/mavlink_msg_pumps.h \
     mavlink/arariboat/mavlink_msg_radio_status.h \
-    mavlink/arariboat/mavlink_msg_rpm_info.h \
     mavlink/arariboat/mavlink_msg_statustext.h \
     mavlink/arariboat/mavlink_msg_temperatures.h \
     mavlink/arariboat/testsuite.h \
@@ -69,12 +65,15 @@ HEADERS += \
     mavlink/mavlink_helpers.h \
     mavlink/mavlink_types.h \
     mavlink/protocol.h \
-    motor_can_manager.h \
-    oldwindow.h
+    networkmanager.h \
+    propulsionwindow.h \
+    settingsmanager.h \
+    settingswindow.h \
 
 FORMS += \
     mainwindow.ui \
-    oldwindow.ui
+    propulsionwindow.ui \
+    settingswindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -86,5 +85,14 @@ RESOURCES += \
 
 DISTFILES += \
     can/Novo(a) Documento de Texto.txt \
+    custom_widgets/Qt-Speedometer-Widget/LICENSE \
+    custom_widgets/Qt-Speedometer-Widget/README.md \
+    custom_widgets/Qt-Speedometer-Widget/speedometer.json \
+    images/graphExp.png \
+    images/graphLinear.png \
+    images/graphLog.png \
     mavlink/arariboat.xml \
     mavlink/arariboat.xml:Zone.Identifier
+
+SUBDIRS += \
+    custom_widgets/Qt-Speedometer-Widget/Speedometer.pro

@@ -13,9 +13,9 @@ public:
     explicit CanController(QObject *parent = nullptr);
 
 private:
-    BMSCANManager _bmsCanManager;
-    MotorCANManager _motorCanManager;
-    MavlinkCanManager _mavlinkCanManager;
+    BMSCANManager *_bmsCanManager;
+    MotorCANManager *_motorCanManager;
+    MavlinkCanManager *_mavlinkCanManager;
 
     const QString pluginName = QStringLiteral("socketcan");
     QCanBusDevice *canDevice;

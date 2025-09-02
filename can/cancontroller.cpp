@@ -14,6 +14,7 @@ CanController::CanController(QObject *parent) : QObject(parent)
 
     QString errorString;
     canDevice = QCanBus::instance()->createDevice(QStringLiteral("socketcan"), QStringLiteral("can0"), &errorString);
+
     if (!canDevice)
     {
         // Error handling goes here
@@ -21,16 +22,23 @@ CanController::CanController(QObject *parent) : QObject(parent)
     }
     else
     {
-        qInfo() << "CAN CONECTADO";
-        canDevice->connectDevice();
+
+        canDevice->setParent(this);
+        if(!canDevice->connectDevice()) return;
+        qInfo() << "CAN CONNECTED!";
         connect(canDevice, &QCanBusDevice::framesReceived, this, &CanController::processReceivedFrames);
         connect(canDevice, &QCanBusDevice::errorOccurred, this, &CanController::processErrors);
 
+        // Creating managers
+        _bmsCanManager = new BMSCANManager(this);
+        _motorCanManager = new MotorCANManager(this);
+        _mavlinkCanManager = new MavlinkCanManager(this);
+
         // Redirect signals
-        connect(&_bmsCanManager, &BMSCANManager::DataReceived, this, [this](const bms_data_t &data){ emit BMSDataReceived(data); });
-        connect(&_motorCanManager, &MotorCANManager::DataReceived, this, [this](const motor_data_t &data){ emit MotorDataReceived(data); });
-        connect(&_mavlinkCanManager, &MavlinkCanManager::MPPTDataReceived, this, [this](const mavlink_mppt_t &data){ emit MPPTDataReceived(data); });
-        connect(&_mavlinkCanManager, &MavlinkCanManager::InstrumentationDataReceived, this, [this](const mavlink_instrumentation_t &data){ emit InstrumentatonDataReceived(data); });
+        connect(_bmsCanManager, &BMSCANManager::DataReceived, this, [this](const bms_data_t &data){ emit BMSDataReceived(data); });
+        connect(_motorCanManager, &MotorCANManager::DataReceived, this, [this](const motor_data_t &data){ emit MotorDataReceived(data); });
+        connect(_mavlinkCanManager, &MavlinkCanManager::MPPTDataReceived, this, [this](const mavlink_mppt_t &data){ emit MPPTDataReceived(data); });
+        connect(_mavlinkCanManager, &MavlinkCanManager::InstrumentationDataReceived, this, [this](const mavlink_instrumentation_t &data){ emit InstrumentatonDataReceived(data); });
     }
 }
 
@@ -61,9 +69,9 @@ void CanController::processReceivedFrames()
             continue;
         }
 
-        if(_bmsCanManager.handle_can_frame(frame)) continue;
-        if(_motorCanManager.handle_can_frame(frame)) continue;
-        if(_mavlinkCanManager.handle_can_frame(frame)) continue;
+        if(_bmsCanManager->handle_can_frame(frame)) continue;
+        if(_motorCanManager->handle_can_frame(frame)) continue;
+        if(_mavlinkCanManager->handle_can_frame(frame)) continue;
     }
 }
 
