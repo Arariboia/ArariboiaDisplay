@@ -20,6 +20,8 @@ public:
 private slots:
     void processTextResponse(const QString text);
 
+    void on_spinBox_valueChanged(int arg1);
+
 private:
     Ui::MainWindow *ui;
 

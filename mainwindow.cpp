@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include "propulsionwindow.h"
 #include "settingswindow.h"
+#include "batterywindow.h"
+#include "mpptwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -16,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tabWidget->removeTab(ui->tabWidget->indexOf(tab2));
     delete tab1;
     delete tab2;
-    
+
 
     // Create managers and controllers (Dependency Injection)
     can = new CanController(this);
@@ -27,7 +29,13 @@ MainWindow::MainWindow(QWidget *parent) :
     QWidget *propulsionWindow = new PropulsionWindow(can, network);
     ui->tabWidget->addTab(propulsionWindow, "Propulsão");
 
-    QWidget *settingsWindow = new SettingsWindow(settings, this);
+    QWidget *batteryWindow = new BatteryWindow(can);
+    ui->tabWidget->addTab(batteryWindow, "Bateria");
+
+    QWidget *mpptWindow = new MpptWindow(can);
+    ui->tabWidget->addTab(mpptWindow, "Geração");
+
+    QWidget *settingsWindow = new SettingsWindow(settings);
     ui->tabWidget->addTab(settingsWindow, "Configurações");
 
     connect(network, &NetworkManager::textResponse, this, &MainWindow::processTextResponse);
@@ -39,4 +47,9 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::processTextResponse(const QString text){
+}
+
+void MainWindow::on_spinBox_valueChanged(int arg1)
+{
+    ui->widget->setValue(arg1);
 }

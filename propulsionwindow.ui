@@ -19,7 +19,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0,3">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0,2">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="5,0,3">
      <item>
@@ -27,8 +27,8 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_5">
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_7">
-           <item>
+          <layout class="QFormLayout" name="formLayout">
+           <item row="0" column="0">
             <widget class="QLabel" name="label_2">
              <property name="text">
               <string>Temp
@@ -39,21 +39,10 @@ Motor BB</string>
              </property>
             </widget>
            </item>
-           <item>
-            <widget class="QLCDNumber" name="tempMotorL_lcd">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-            </widget>
+           <item row="0" column="1">
+            <widget class="QLCDNumber" name="tempMotorL_lcd"/>
            </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_8">
-           <item>
+           <item row="1" column="0">
             <widget class="QLabel" name="label_4">
              <property name="text">
               <string>Temp
@@ -64,15 +53,8 @@ ESC BB</string>
              </property>
             </widget>
            </item>
-           <item>
-            <widget class="QLCDNumber" name="tempESCL_lcd">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-            </widget>
+           <item row="1" column="1">
+            <widget class="QLCDNumber" name="tempESCL_lcd"/>
            </item>
           </layout>
          </item>
@@ -81,33 +63,11 @@ ESC BB</string>
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_6">
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_9">
-           <item>
-            <widget class="QLabel" name="label_5">
-             <property name="text">
-              <string>Temp
-Motor BR</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
+          <layout class="QFormLayout" name="formLayout_2">
+           <item row="0" column="1">
+            <widget class="QLCDNumber" name="tempMotorR_lcd"/>
            </item>
-           <item>
-            <widget class="QLCDNumber" name="tempMotorR_lcd">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_11">
-           <item>
+           <item row="1" column="0">
             <widget class="QLabel" name="label_6">
              <property name="text">
               <string>Temp
@@ -118,13 +78,17 @@ ESC BR</string>
              </property>
             </widget>
            </item>
-           <item>
-            <widget class="QLCDNumber" name="tempESCR_lcd">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
+           <item row="1" column="1">
+            <widget class="QLCDNumber" name="tempESCR_lcd"/>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_5">
+             <property name="text">
+              <string>Temp
+Motor BR</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
              </property>
             </widget>
            </item>
@@ -177,6 +141,7 @@ ESC BR</string>
            </property>
            <property name="font">
             <font>
+             <pointsize>9</pointsize>
              <weight>75</weight>
              <bold>true</bold>
             </font>

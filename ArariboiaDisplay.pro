@@ -18,25 +18,32 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    batterywindow.cpp \
     can/bms_can_manager.cpp \
     can/cancontroller.cpp \
     can/mavlinkcanmanager.cpp \
     can/motor_can_manager.cpp \
     custom_widgets/Qt-Speedometer-Widget/speedometer.cpp \
+    custom_widgets/batterylevelwidget.cpp \
     main.cpp \
     mainwindow.cpp \
+    mpptwindow.cpp \
     networkmanager.cpp \
+    pilotwindow.cpp \
     propulsionwindow.cpp \
     settingsmanager.cpp \
     settingswindow.cpp \
 
 HEADERS += \
+    batterywindow.h \
     can/bms_can_manager.h \
     can/can_manager.h \
     can/cancontroller.h \
     can/mavlinkcanmanager.h \
     can/motor_can_manager.h \
     custom_widgets/Qt-Speedometer-Widget/speedometer.h \
+    custom_widgets/batterylevelwidget.h \
+    custom_widgets/readonlycheckbox.h \
     mainwindow.h \
     mavlink/arariboat/arariboat.h \
     mavlink/arariboat/mavlink.h \
@@ -65,13 +72,19 @@ HEADERS += \
     mavlink/mavlink_helpers.h \
     mavlink/mavlink_types.h \
     mavlink/protocol.h \
+    mpptwindow.h \
     networkmanager.h \
+    pilotwindow.h \
     propulsionwindow.h \
     settingsmanager.h \
     settingswindow.h \
 
 FORMS += \
+    batterywindow.ui \
+    custom_widgets/batterylevelwidget.ui \
     mainwindow.ui \
+    mpptwindow.ui \
+    pilotwindow.ui \
     propulsionwindow.ui \
     settingswindow.ui
 
