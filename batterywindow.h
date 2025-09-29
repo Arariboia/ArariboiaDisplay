@@ -2,7 +2,9 @@
 #define BATTERYWINDOW_H
 
 #include <QWidget>
+#include <QTimer>
 #include "can/cancontroller.h"
+#include "settingsmanager.h"
 
 namespace Ui {
 class BatteryWindow;
@@ -13,12 +15,14 @@ class BatteryWindow : public QWidget
     Q_OBJECT
 
 public:
-    explicit BatteryWindow(CanController *can, QWidget *parent = nullptr);
+    explicit BatteryWindow(CanController *can, SettingsManager *settings, QWidget *parent = nullptr);
     ~BatteryWindow();
 
 private:
     Ui::BatteryWindow *ui;
     CanController *can;
+    SettingsManager *settings;
+    QTimer pollTimer;
     void setBatterySocValue(int value);
 
 public slots:

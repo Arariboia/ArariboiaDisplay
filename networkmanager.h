@@ -11,18 +11,19 @@ class NetworkManager : public QObject
 public:
     explicit NetworkManager(SettingsManager *settings, QObject *parent = nullptr);
 
-    void postPropulsionFunction(const QString &functionName);
+    void postPropulsionData(const QString &functionName, const double deadZone, const double cutZone, const double slope);
 
 private:
     QNetworkAccessManager *networkManager;
     SettingsManager *settings;
+    void postPropulsion(const QByteArray &body);
 
 public slots:
     void processRequest(QNetworkReply *reply);
 
 signals:
-    void textResponse(const QString text);
-
+    void textResponse(const QString &text);
+    void erroOcurred(const QString &error);
 };
 
 #endif // NETWORKMANAGER_H

@@ -11,13 +11,13 @@ NetworkManager::NetworkManager(SettingsManager *settings, QObject *parent) :
 }
 
 void NetworkManager::processRequest(QNetworkReply *reply){
-    QByteArray data = reply->readAll();
-    emit NetworkManager::textResponse(QString::fromUtf8(data));
+    if(reply->error() == QNetworkReply::NoError){
+        qInfo() << "GERAL: " << reply->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
+        emit NetworkManager::textResponse(reply->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString());
+    }
 }
 
-void NetworkManager::postPropulsionFunction(const QString &functionName){
-
-    QByteArray body = QString("function=%1").arg(functionName).toUtf8();
+void NetworkManager::postPropulsion(const QByteArray &body){
     QNetworkRequest request = QNetworkRequest(QUrl(QString("http://%1/propulsion").arg(settings->getPropulsionIP())));
 
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
@@ -28,7 +28,18 @@ void NetworkManager::postPropulsionFunction(const QString &functionName){
     });
 
     connect(reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::error),
-            this, [reply](){
-        qInfo() << reply->errorString();
+            this, [reply, this](){
+        qInfo() << "REPLY: " << reply->errorString();
+        emit NetworkManager::erroOcurred(reply->errorString());
+        reply->deleteLater();
     });
 }
+
+void NetworkManager::postPropulsionData(const QString &functionName = "", const double deadZone = -1, const double cutZone = -1, const double slope = -1){
+
+    QByteArray body = QString("function=%1&deadzone=%2&cutzone=%3&slope=%4").arg(functionName).arg(deadZone).arg(cutZone).arg(slope).toUtf8();
+    postPropulsion(body);
+}
+
+
+

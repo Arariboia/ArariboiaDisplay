@@ -16,8 +16,7 @@ PropulsionWindow::PropulsionWindow(CanController *can, NetworkManager *network, 
     ui->rpmL_speedometer->setFont(QFont("Sans Serif", 18));
     ui->rpmR_speedometer->setFont(QFont("Sans Serif", 18));
 
-    connect(can, &CanController::MotorDataReceived, this, &PropulsionWindow::processPropulsionPacket);
-    connect(network, &NetworkManager::textResponse, this, &PropulsionWindow::textResponse);
+    connect(can, &CanController::MotorDataReceived, this, &PropulsionWindow::processMotorPacket);
 }
 
 PropulsionWindow::~PropulsionWindow()
@@ -25,19 +24,23 @@ PropulsionWindow::~PropulsionWindow()
     delete ui;
 }
 
-void PropulsionWindow::processPropulsionPacket(const motor_data_t &data){
-    if(data.motor == 0){
+void PropulsionWindow::processMotorPacket(const motor_data_t &data){
+    if(data.motor == LEFT_MOTOR){
         // left motor
-        ui->rpmL_speedometer->setValues(data.electrical_data.rpm, (data.electrical_data.rpm / 2500.0) * 100.0);
+        ui->rpmL_speedometer->setValues(-1 * data.electrical_data.rpm, abs(data.electrical_data.rpm / 4500.0) * 100.0);
         ui->tempMotorL_lcd->display(data.state_data.motor_temp_C);
         ui->tempESCL_lcd->display(data.state_data.controller_temp_C);
     }
-    else{
+    else if(data.motor == RIGHT_MOTOR){
         // right motor
-        ui->rpmR_speedometer->setValues(data.electrical_data.rpm, (data.electrical_data.rpm / 2500.0) * 100.0);
+        ui->rpmR_speedometer->setValues(-1 * data.electrical_data.rpm, abs(data.electrical_data.rpm / 4500.0) * 100.0);
         ui->tempMotorR_lcd->display(data.state_data.motor_temp_C);
         ui->tempESCR_lcd->display(data.state_data.controller_temp_C);
     }
+}
+
+void PropulsionWindow::processEletronicPropulsionPacket(const mavlink_eletronic_propulsion_t &data){
+    ui->direction_progressBar->setValue(data.helm_potentiometer / 3300);
 }
 
 void PropulsionWindow::on_graphL_btn_clicked()
@@ -58,9 +61,5 @@ void PropulsionWindow::on_sendGraph_btn_clicked()
     if(graphIndex == 0) functionName = "linear";
     else if(graphIndex == 1) functionName = "exp";
     else if(graphIndex == 2) functionName = "log";
-    network->postPropulsionFunction(functionName);
-}
-
-void PropulsionWindow::textResponse(const QString text){
-    qInfo() << "NETWORK: " << text;
+    network->postPropulsionData(functionName, -1, -1, -1);
 }

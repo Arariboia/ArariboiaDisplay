@@ -15,7 +15,11 @@ public:
 
 signals:
     void MPPTDataReceived(const mavlink_mppt_t &data);
+
+    void MPPTStringsDataReceived(const mavlink_mppt_strings_t &data);
+
     void InstrumentationDataReceived(const mavlink_instrumentation_t &data);
+    void PropulsionDataReceived(const mavlink_eletronic_propulsion_t &data);
 
 public slots:
 };

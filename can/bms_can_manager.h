@@ -92,17 +92,19 @@ typedef struct {
 class BMSCANManager : public QObject, public ICANManager {
     Q_OBJECT
 public:
-    explicit BMSCANManager(QObject *parent = nullptr);
+    explicit BMSCANManager(QCanBusDevice *can, QObject *parent = nullptr);
     bool handle_can_frame(const QCanBusFrame &message) override;
     void poll_bms_data(); // Call this periodically to process BMS 
     void print_can_handlers();
 
 signals:
     void DataReceived(const bms_data_t &data);
+    void FrameToWrite(const QCanBusFrame &frame);
 
 private:
 
     bms_data_t _bms_data;
+    QCanBusDevice *can;
 
     using CANHandler = std::function<void(const QCanBusFrame &)>;
     std::map<uint32_t, CANHandler> _can_handlers;

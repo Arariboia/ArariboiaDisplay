@@ -9,17 +9,17 @@ typedef struct __mavlink_bms_t {
  uint16_t voltages[16]; /*< [mV] Voltage of each cell.*/
  int16_t temperatures[2]; /*< [cdegC] Temperature of the battery*/
  int16_t current_battery; /*< [dA] Battery current*/
+ int16_t state_of_charge; /*< [%] Remaining battery energy. Values: [0-100]*/
  uint16_t timestamp_milliseconds; /*<  Milliseconds within Unix time*/
- int8_t state_of_charge; /*< [%] Remaining battery energy. Values: [0-100]*/
 } mavlink_bms_t;
 
-#define MAVLINK_MSG_ID_BMS_LEN 45
-#define MAVLINK_MSG_ID_BMS_MIN_LEN 45
-#define MAVLINK_MSG_ID_6_LEN 45
-#define MAVLINK_MSG_ID_6_MIN_LEN 45
+#define MAVLINK_MSG_ID_BMS_LEN 46
+#define MAVLINK_MSG_ID_BMS_MIN_LEN 46
+#define MAVLINK_MSG_ID_6_LEN 46
+#define MAVLINK_MSG_ID_6_MIN_LEN 46
 
-#define MAVLINK_MSG_ID_BMS_CRC 65
-#define MAVLINK_MSG_ID_6_CRC 65
+#define MAVLINK_MSG_ID_BMS_CRC 43
+#define MAVLINK_MSG_ID_6_CRC 43
 
 #define MAVLINK_MSG_BMS_FIELD_VOLTAGES_LEN 16
 #define MAVLINK_MSG_BMS_FIELD_TEMPERATURES_LEN 2
@@ -32,9 +32,9 @@ typedef struct __mavlink_bms_t {
     {  { "voltages", NULL, MAVLINK_TYPE_UINT16_T, 16, 4, offsetof(mavlink_bms_t, voltages) }, \
          { "temperatures", NULL, MAVLINK_TYPE_INT16_T, 2, 36, offsetof(mavlink_bms_t, temperatures) }, \
          { "current_battery", NULL, MAVLINK_TYPE_INT16_T, 0, 40, offsetof(mavlink_bms_t, current_battery) }, \
-         { "state_of_charge", NULL, MAVLINK_TYPE_INT8_T, 0, 44, offsetof(mavlink_bms_t, state_of_charge) }, \
+         { "state_of_charge", NULL, MAVLINK_TYPE_INT16_T, 0, 42, offsetof(mavlink_bms_t, state_of_charge) }, \
          { "timestamp_seconds", NULL, MAVLINK_TYPE_UINT32_T, 0, 0, offsetof(mavlink_bms_t, timestamp_seconds) }, \
-         { "timestamp_milliseconds", NULL, MAVLINK_TYPE_UINT16_T, 0, 42, offsetof(mavlink_bms_t, timestamp_milliseconds) }, \
+         { "timestamp_milliseconds", NULL, MAVLINK_TYPE_UINT16_T, 0, 44, offsetof(mavlink_bms_t, timestamp_milliseconds) }, \
          } \
 }
 #else
@@ -44,9 +44,9 @@ typedef struct __mavlink_bms_t {
     {  { "voltages", NULL, MAVLINK_TYPE_UINT16_T, 16, 4, offsetof(mavlink_bms_t, voltages) }, \
          { "temperatures", NULL, MAVLINK_TYPE_INT16_T, 2, 36, offsetof(mavlink_bms_t, temperatures) }, \
          { "current_battery", NULL, MAVLINK_TYPE_INT16_T, 0, 40, offsetof(mavlink_bms_t, current_battery) }, \
-         { "state_of_charge", NULL, MAVLINK_TYPE_INT8_T, 0, 44, offsetof(mavlink_bms_t, state_of_charge) }, \
+         { "state_of_charge", NULL, MAVLINK_TYPE_INT16_T, 0, 42, offsetof(mavlink_bms_t, state_of_charge) }, \
          { "timestamp_seconds", NULL, MAVLINK_TYPE_UINT32_T, 0, 0, offsetof(mavlink_bms_t, timestamp_seconds) }, \
-         { "timestamp_milliseconds", NULL, MAVLINK_TYPE_UINT16_T, 0, 42, offsetof(mavlink_bms_t, timestamp_milliseconds) }, \
+         { "timestamp_milliseconds", NULL, MAVLINK_TYPE_UINT16_T, 0, 44, offsetof(mavlink_bms_t, timestamp_milliseconds) }, \
          } \
 }
 #endif
@@ -66,14 +66,14 @@ typedef struct __mavlink_bms_t {
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_bms_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-                               const uint16_t *voltages, const int16_t *temperatures, int16_t current_battery, int8_t state_of_charge, uint32_t timestamp_seconds, uint16_t timestamp_milliseconds)
+                               const uint16_t *voltages, const int16_t *temperatures, int16_t current_battery, int16_t state_of_charge, uint32_t timestamp_seconds, uint16_t timestamp_milliseconds)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_BMS_LEN];
     _mav_put_uint32_t(buf, 0, timestamp_seconds);
     _mav_put_int16_t(buf, 40, current_battery);
-    _mav_put_uint16_t(buf, 42, timestamp_milliseconds);
-    _mav_put_int8_t(buf, 44, state_of_charge);
+    _mav_put_int16_t(buf, 42, state_of_charge);
+    _mav_put_uint16_t(buf, 44, timestamp_milliseconds);
     _mav_put_uint16_t_array(buf, 4, voltages, 16);
     _mav_put_int16_t_array(buf, 36, temperatures, 2);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_BMS_LEN);
@@ -81,8 +81,8 @@ static inline uint16_t mavlink_msg_bms_pack(uint8_t system_id, uint8_t component
     mavlink_bms_t packet;
     packet.timestamp_seconds = timestamp_seconds;
     packet.current_battery = current_battery;
-    packet.timestamp_milliseconds = timestamp_milliseconds;
     packet.state_of_charge = state_of_charge;
+    packet.timestamp_milliseconds = timestamp_milliseconds;
     mav_array_memcpy(packet.voltages, voltages, sizeof(uint16_t)*16);
     mav_array_memcpy(packet.temperatures, temperatures, sizeof(int16_t)*2);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_BMS_LEN);
@@ -108,14 +108,14 @@ static inline uint16_t mavlink_msg_bms_pack(uint8_t system_id, uint8_t component
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_bms_pack_status(uint8_t system_id, uint8_t component_id, mavlink_status_t *_status, mavlink_message_t* msg,
-                               const uint16_t *voltages, const int16_t *temperatures, int16_t current_battery, int8_t state_of_charge, uint32_t timestamp_seconds, uint16_t timestamp_milliseconds)
+                               const uint16_t *voltages, const int16_t *temperatures, int16_t current_battery, int16_t state_of_charge, uint32_t timestamp_seconds, uint16_t timestamp_milliseconds)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_BMS_LEN];
     _mav_put_uint32_t(buf, 0, timestamp_seconds);
     _mav_put_int16_t(buf, 40, current_battery);
-    _mav_put_uint16_t(buf, 42, timestamp_milliseconds);
-    _mav_put_int8_t(buf, 44, state_of_charge);
+    _mav_put_int16_t(buf, 42, state_of_charge);
+    _mav_put_uint16_t(buf, 44, timestamp_milliseconds);
     _mav_put_uint16_t_array(buf, 4, voltages, 16);
     _mav_put_int16_t_array(buf, 36, temperatures, 2);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_BMS_LEN);
@@ -123,8 +123,8 @@ static inline uint16_t mavlink_msg_bms_pack_status(uint8_t system_id, uint8_t co
     mavlink_bms_t packet;
     packet.timestamp_seconds = timestamp_seconds;
     packet.current_battery = current_battery;
-    packet.timestamp_milliseconds = timestamp_milliseconds;
     packet.state_of_charge = state_of_charge;
+    packet.timestamp_milliseconds = timestamp_milliseconds;
     mav_array_memcpy(packet.voltages, voltages, sizeof(uint16_t)*16);
     mav_array_memcpy(packet.temperatures, temperatures, sizeof(int16_t)*2);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_BMS_LEN);
@@ -154,14 +154,14 @@ static inline uint16_t mavlink_msg_bms_pack_status(uint8_t system_id, uint8_t co
  */
 static inline uint16_t mavlink_msg_bms_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
                                mavlink_message_t* msg,
-                                   const uint16_t *voltages,const int16_t *temperatures,int16_t current_battery,int8_t state_of_charge,uint32_t timestamp_seconds,uint16_t timestamp_milliseconds)
+                                   const uint16_t *voltages,const int16_t *temperatures,int16_t current_battery,int16_t state_of_charge,uint32_t timestamp_seconds,uint16_t timestamp_milliseconds)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_BMS_LEN];
     _mav_put_uint32_t(buf, 0, timestamp_seconds);
     _mav_put_int16_t(buf, 40, current_battery);
-    _mav_put_uint16_t(buf, 42, timestamp_milliseconds);
-    _mav_put_int8_t(buf, 44, state_of_charge);
+    _mav_put_int16_t(buf, 42, state_of_charge);
+    _mav_put_uint16_t(buf, 44, timestamp_milliseconds);
     _mav_put_uint16_t_array(buf, 4, voltages, 16);
     _mav_put_int16_t_array(buf, 36, temperatures, 2);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_BMS_LEN);
@@ -169,8 +169,8 @@ static inline uint16_t mavlink_msg_bms_pack_chan(uint8_t system_id, uint8_t comp
     mavlink_bms_t packet;
     packet.timestamp_seconds = timestamp_seconds;
     packet.current_battery = current_battery;
-    packet.timestamp_milliseconds = timestamp_milliseconds;
     packet.state_of_charge = state_of_charge;
+    packet.timestamp_milliseconds = timestamp_milliseconds;
     mav_array_memcpy(packet.voltages, voltages, sizeof(uint16_t)*16);
     mav_array_memcpy(packet.temperatures, temperatures, sizeof(int16_t)*2);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_BMS_LEN);
@@ -234,14 +234,14 @@ static inline uint16_t mavlink_msg_bms_encode_status(uint8_t system_id, uint8_t 
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_bms_send(mavlink_channel_t chan, const uint16_t *voltages, const int16_t *temperatures, int16_t current_battery, int8_t state_of_charge, uint32_t timestamp_seconds, uint16_t timestamp_milliseconds)
+static inline void mavlink_msg_bms_send(mavlink_channel_t chan, const uint16_t *voltages, const int16_t *temperatures, int16_t current_battery, int16_t state_of_charge, uint32_t timestamp_seconds, uint16_t timestamp_milliseconds)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_BMS_LEN];
     _mav_put_uint32_t(buf, 0, timestamp_seconds);
     _mav_put_int16_t(buf, 40, current_battery);
-    _mav_put_uint16_t(buf, 42, timestamp_milliseconds);
-    _mav_put_int8_t(buf, 44, state_of_charge);
+    _mav_put_int16_t(buf, 42, state_of_charge);
+    _mav_put_uint16_t(buf, 44, timestamp_milliseconds);
     _mav_put_uint16_t_array(buf, 4, voltages, 16);
     _mav_put_int16_t_array(buf, 36, temperatures, 2);
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_BMS, buf, MAVLINK_MSG_ID_BMS_MIN_LEN, MAVLINK_MSG_ID_BMS_LEN, MAVLINK_MSG_ID_BMS_CRC);
@@ -249,8 +249,8 @@ static inline void mavlink_msg_bms_send(mavlink_channel_t chan, const uint16_t *
     mavlink_bms_t packet;
     packet.timestamp_seconds = timestamp_seconds;
     packet.current_battery = current_battery;
-    packet.timestamp_milliseconds = timestamp_milliseconds;
     packet.state_of_charge = state_of_charge;
+    packet.timestamp_milliseconds = timestamp_milliseconds;
     mav_array_memcpy(packet.voltages, voltages, sizeof(uint16_t)*16);
     mav_array_memcpy(packet.temperatures, temperatures, sizeof(int16_t)*2);
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_BMS, (const char *)&packet, MAVLINK_MSG_ID_BMS_MIN_LEN, MAVLINK_MSG_ID_BMS_LEN, MAVLINK_MSG_ID_BMS_CRC);
@@ -279,14 +279,14 @@ static inline void mavlink_msg_bms_send_struct(mavlink_channel_t chan, const mav
   is usually the receive buffer for the channel, and allows a reply to an
   incoming message with minimum stack space usage.
  */
-static inline void mavlink_msg_bms_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  const uint16_t *voltages, const int16_t *temperatures, int16_t current_battery, int8_t state_of_charge, uint32_t timestamp_seconds, uint16_t timestamp_milliseconds)
+static inline void mavlink_msg_bms_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  const uint16_t *voltages, const int16_t *temperatures, int16_t current_battery, int16_t state_of_charge, uint32_t timestamp_seconds, uint16_t timestamp_milliseconds)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char *buf = (char *)msgbuf;
     _mav_put_uint32_t(buf, 0, timestamp_seconds);
     _mav_put_int16_t(buf, 40, current_battery);
-    _mav_put_uint16_t(buf, 42, timestamp_milliseconds);
-    _mav_put_int8_t(buf, 44, state_of_charge);
+    _mav_put_int16_t(buf, 42, state_of_charge);
+    _mav_put_uint16_t(buf, 44, timestamp_milliseconds);
     _mav_put_uint16_t_array(buf, 4, voltages, 16);
     _mav_put_int16_t_array(buf, 36, temperatures, 2);
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_BMS, buf, MAVLINK_MSG_ID_BMS_MIN_LEN, MAVLINK_MSG_ID_BMS_LEN, MAVLINK_MSG_ID_BMS_CRC);
@@ -294,8 +294,8 @@ static inline void mavlink_msg_bms_send_buf(mavlink_message_t *msgbuf, mavlink_c
     mavlink_bms_t *packet = (mavlink_bms_t *)msgbuf;
     packet->timestamp_seconds = timestamp_seconds;
     packet->current_battery = current_battery;
-    packet->timestamp_milliseconds = timestamp_milliseconds;
     packet->state_of_charge = state_of_charge;
+    packet->timestamp_milliseconds = timestamp_milliseconds;
     mav_array_memcpy(packet->voltages, voltages, sizeof(uint16_t)*16);
     mav_array_memcpy(packet->temperatures, temperatures, sizeof(int16_t)*2);
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_BMS, (const char *)packet, MAVLINK_MSG_ID_BMS_MIN_LEN, MAVLINK_MSG_ID_BMS_LEN, MAVLINK_MSG_ID_BMS_CRC);
@@ -343,9 +343,9 @@ static inline int16_t mavlink_msg_bms_get_current_battery(const mavlink_message_
  *
  * @return [%] Remaining battery energy. Values: [0-100]
  */
-static inline int8_t mavlink_msg_bms_get_state_of_charge(const mavlink_message_t* msg)
+static inline int16_t mavlink_msg_bms_get_state_of_charge(const mavlink_message_t* msg)
 {
-    return _MAV_RETURN_int8_t(msg,  44);
+    return _MAV_RETURN_int16_t(msg,  42);
 }
 
 /**
@@ -365,7 +365,7 @@ static inline uint32_t mavlink_msg_bms_get_timestamp_seconds(const mavlink_messa
  */
 static inline uint16_t mavlink_msg_bms_get_timestamp_milliseconds(const mavlink_message_t* msg)
 {
-    return _MAV_RETURN_uint16_t(msg,  42);
+    return _MAV_RETURN_uint16_t(msg,  44);
 }
 
 /**
@@ -381,8 +381,8 @@ static inline void mavlink_msg_bms_decode(const mavlink_message_t* msg, mavlink_
     mavlink_msg_bms_get_voltages(msg, bms->voltages);
     mavlink_msg_bms_get_temperatures(msg, bms->temperatures);
     bms->current_battery = mavlink_msg_bms_get_current_battery(msg);
-    bms->timestamp_milliseconds = mavlink_msg_bms_get_timestamp_milliseconds(msg);
     bms->state_of_charge = mavlink_msg_bms_get_state_of_charge(msg);
+    bms->timestamp_milliseconds = mavlink_msg_bms_get_timestamp_milliseconds(msg);
 #else
         uint8_t len = msg->len < MAVLINK_MSG_ID_BMS_LEN? msg->len : MAVLINK_MSG_ID_BMS_LEN;
         memset(bms, 0, MAVLINK_MSG_ID_BMS_LEN);

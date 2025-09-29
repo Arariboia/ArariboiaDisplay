@@ -14,15 +14,52 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">/* Fundo preto e texto branco global */
+QWidget {
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+QDoubleSpinBox {
+	background-color: #111111;
+    color: #FFFFFF;
+}
+
+QSpinBox {
+	background-color: #111111;
+    color: #FFFFFF;
+}
+
+/* QLineEdit com borda visível */
+QLineEdit {
+    background-color: #111111;
+    color: #FFFFFF;
+}
+
+/* ProgressBar */
+QProgressBar {
+    background-color: #111111;
+}
+
+/* LCD Number */
+QLCDNumber {
+    background-color: #111111;
+    color: #FFFFFF;; /* verde estilo LCD */
+}
+
+/* Linhas horizontais/verticais (QFrame com shape HLine/VLine) */
+QFrame[frameShape=&quot;4&quot;], /* HLine */
+QFrame[frameShape=&quot;5&quot;]  /* VLine */ {
+    background-color: #555555;
+}
+</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="styleSheet">
-       <string notr="true">
-</string>
+       <string notr="true"/>
       </property>
       <property name="currentIndex">
        <number>0</number>
@@ -67,59 +104,9 @@
       </widget>
      </widget>
     </item>
-    <item>
-     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
-      <item>
-       <widget class="QLabel" name="label_2">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>15</width>
-          <height>15</height>
-         </size>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="pixmap">
-         <pixmap resource="Resources.qrc">:/images/arariboiaLogo.jpg</pixmap>
-        </property>
-        <property name="scaledContents">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="text">
-         <string>Equipe Arariboia</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
    </layout>
   </widget>
+  <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <customwidgets>
   <customwidget>
@@ -129,8 +116,6 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="Resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

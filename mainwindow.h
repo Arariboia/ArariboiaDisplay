@@ -18,7 +18,8 @@ public:
     ~MainWindow();
 
 private slots:
-    void processTextResponse(const QString text);
+    void processTextResponse(const QString &text);
+    void networkErrorResponse(const QString &text);
 
     void on_spinBox_valueChanged(int arg1);
 

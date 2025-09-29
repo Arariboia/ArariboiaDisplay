@@ -77,11 +77,13 @@ void MotorCANManager::handle_state_data(const QCanBusFrame &message, motor_state
 
 void MotorCANManager::check_and_publish() {
     if (_received_flags_left == (FLAG_ELECTRICAL | FLAG_STATE)) {
+        motor_data_left.motor = LEFT_MOTOR;
         emit DataReceived(motor_data_left);
         _received_flags_left = 0; // Reset for next cycle
     }
 
     if (_received_flags_right == (FLAG_ELECTRICAL | FLAG_STATE)) {
+        motor_data_right.motor = RIGHT_MOTOR;
         emit DataReceived(motor_data_right);
         _received_flags_right = 0; // Reset for next cycle
     }
@@ -132,9 +134,6 @@ void MotorCANManager::decode_motor_status(uint8_t status) {
 
     uint8_t dc_contactor = (status & BIT7) >> 7; // DC contactor bit
     const char* dc_contactor_str = dc_contactor ? "ON" : "OFF";
-
-    printf("Gear: %s, Brake: %s, Operation Mode: %s, DC Contactor: %s\n",
-        gear_str, brake_str, operation_mode_str, dc_contactor_str);
 }
 
 void MotorCANManager::decode_motor_error(uint32_t error) {

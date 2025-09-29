@@ -38,8 +38,8 @@ Speedometer::Speedometer(QWidget *parent) :
     m_powerGradient.setColorAt(0, Qt::red);
     m_powerGradient.setColorAt(0.375, Qt::yellow);
     m_powerGradient.setColorAt(0.75, Qt::green);
-    m_unitTextColor = QColor(Qt::gray);
-    m_speedTextColor = QColor(Qt::black);
+    m_unitTextColor = QColor(Qt::white); //QColor(Qt::gray);
+    m_speedTextColor = QColor(Qt::white);//QColor(Qt::black);
     m_powerPathColor = QColor(Qt::gray);
 }
 

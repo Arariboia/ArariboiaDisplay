@@ -1,4 +1,5 @@
 #include "bms_can_manager.h"
+#include <QDebug>
 
 // Example CAN IDs for BMS data (replace with actual IDs from your BMS protocol)
 #define BMS_VOLTAGE_ID_POLL 0x18900140
@@ -18,7 +19,7 @@
 
 static const char* TAG_BMS = "BMS_CAN";
 
-BMSCANManager::BMSCANManager(QObject *parent) : QObject(parent) {
+BMSCANManager::BMSCANManager(QCanBusDevice *can, QObject *parent) : QObject(parent), can(can) {
     initialize_can_handlers();
 }   
 
@@ -160,4 +161,6 @@ void BMSCANManager::send_poll_command(uint32_t data_id) {
 //    memset(message.data, 0, sizeof(message.data));
 
 //    twai_transmit(&message, pdMS_TO_TICKS(10)); // Send the message with a timeout of 1 second
+
+    can->writeFrame(QCanBusFrame(data_id, QByteArray(8, char(0))));
 }

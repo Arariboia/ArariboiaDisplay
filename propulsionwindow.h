@@ -18,15 +18,14 @@ public:
     ~PropulsionWindow();
 
 private slots:
-    void processPropulsionPacket(const motor_data_t &data);
+    void processMotorPacket(const motor_data_t &data);
+    void processEletronicPropulsionPacket(const mavlink_eletronic_propulsion_t &data);
 
     void on_graphL_btn_clicked();
 
     void on_graphR_btn_clicked();
 
     void on_sendGraph_btn_clicked();
-
-    void textResponse(const QString text);
 
 private:
     Ui::PropulsionWindow *ui;

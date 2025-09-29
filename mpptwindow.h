@@ -21,7 +21,8 @@ private:
     CanController *can;
 
 public slots:
-    void processMpptPacket(mavlink_mppt_t &data);
+    void processMpptPacket(const mavlink_mppt_t &data);
+    void processMpptStringPacket(const mavlink_mppt_strings_t &data);
 };
 
 #endif // MPPTWINDOW_H

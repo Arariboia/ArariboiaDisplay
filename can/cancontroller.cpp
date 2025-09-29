@@ -30,7 +30,7 @@ CanController::CanController(QObject *parent) : QObject(parent)
         connect(canDevice, &QCanBusDevice::errorOccurred, this, &CanController::processErrors);
 
         // Creating managers
-        _bmsCanManager = new BMSCANManager(this);
+        _bmsCanManager = new BMSCANManager(canDevice, this);
         _motorCanManager = new MotorCANManager(this);
         _mavlinkCanManager = new MavlinkCanManager(this);
 
@@ -39,6 +39,8 @@ CanController::CanController(QObject *parent) : QObject(parent)
         connect(_motorCanManager, &MotorCANManager::DataReceived, this, [this](const motor_data_t &data){ emit MotorDataReceived(data); });
         connect(_mavlinkCanManager, &MavlinkCanManager::MPPTDataReceived, this, [this](const mavlink_mppt_t &data){ emit MPPTDataReceived(data); });
         connect(_mavlinkCanManager, &MavlinkCanManager::InstrumentationDataReceived, this, [this](const mavlink_instrumentation_t &data){ emit InstrumentatonDataReceived(data); });
+
+        connect(_mavlinkCanManager, &MavlinkCanManager::MPPTStringsDataReceived, this, [this](const mavlink_mppt_strings_t &data){ emit MPPTStringsDataReceived(data); });
     }
 }
 
@@ -46,11 +48,15 @@ void CanController::processErrors(QCanBusDevice::CanBusError error) const
 {
     switch (error) {
     case QCanBusDevice::ReadError:
+        qDebug() << "CAN ERROR: " << canDevice->errorString();
     case QCanBusDevice::WriteError:
+        qDebug() << "CAN ERROR: " << canDevice->errorString();
     case QCanBusDevice::ConnectionError:
+        qDebug() << "CAN ERROR: " << canDevice->errorString();
     case QCanBusDevice::ConfigurationError:
+        qDebug() << "CAN ERROR: " << canDevice->errorString();
     case QCanBusDevice::UnknownError:
-        qDebug() << canDevice->errorString();
+        qDebug() << "CAN ERROR: " << canDevice->errorString();
         break;
     default:
         break;
@@ -65,13 +71,19 @@ void CanController::processReceivedFrames()
         const QCanBusFrame frame = canDevice->readFrame();
 
         if (frame.frameType() == QCanBusFrame::ErrorFrame){
-            qDebug() << canDevice->interpretErrorFrame(frame);
+            qDebug() << "CAN ERROR: " << canDevice->interpretErrorFrame(frame);
             continue;
         }
 
         if(_bmsCanManager->handle_can_frame(frame)) continue;
         if(_motorCanManager->handle_can_frame(frame)) continue;
         if(_mavlinkCanManager->handle_can_frame(frame)) continue;
+    }
+}
+
+void CanController::pollBMSData(){
+    if(_bmsCanManager){
+        _bmsCanManager->poll_bms_data();
     }
 }
 

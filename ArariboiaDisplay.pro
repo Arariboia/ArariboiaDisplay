@@ -46,31 +46,60 @@ HEADERS += \
     custom_widgets/readonlycheckbox.h \
     mainwindow.h \
     mavlink/arariboat/arariboat.h \
+    mavlink/arariboat/arariboat.h \
+    mavlink/arariboat/mavlink.h \
     mavlink/arariboat/mavlink.h \
     mavlink/arariboat/mavlink_msg_bms.h \
+    mavlink/arariboat/mavlink_msg_bms.h \
+    mavlink/arariboat/mavlink_msg_bms_status.h \
     mavlink/arariboat/mavlink_msg_bms_status.h \
     mavlink/arariboat/mavlink_msg_debug.h \
+    mavlink/arariboat/mavlink_msg_debug.h \
+    mavlink/arariboat/mavlink_msg_eletronic_propulsion.h \
+    mavlink/arariboat/mavlink_msg_ezkontrol_mcu_meter_data_i.h \
     mavlink/arariboat/mavlink_msg_ezkontrol_mcu_meter_data_i.h \
     mavlink/arariboat/mavlink_msg_ezkontrol_mcu_meter_data_ii.h \
+    mavlink/arariboat/mavlink_msg_ezkontrol_mcu_meter_data_ii.h \
+    mavlink/arariboat/mavlink_msg_gps.h \
     mavlink/arariboat/mavlink_msg_gps.h \
     mavlink/arariboat/mavlink_msg_instrumentation.h \
+    mavlink/arariboat/mavlink_msg_instrumentation.h \
+    mavlink/arariboat/mavlink_msg_mppt.h \
     mavlink/arariboat/mavlink_msg_mppt.h \
     mavlink/arariboat/mavlink_msg_mppt_state.h \
+    mavlink/arariboat/mavlink_msg_mppt_state.h \
+    mavlink/arariboat/mavlink_msg_mppt_strings.h \
+    mavlink/arariboat/mavlink_msg_named_value_float.h \
     mavlink/arariboat/mavlink_msg_named_value_float.h \
     mavlink/arariboat/mavlink_msg_named_value_int.h \
+    mavlink/arariboat/mavlink_msg_named_value_int.h \
+    mavlink/arariboat/mavlink_msg_param_request_read.h \
     mavlink/arariboat/mavlink_msg_param_request_read.h \
     mavlink/arariboat/mavlink_msg_param_set.h \
+    mavlink/arariboat/mavlink_msg_param_set.h \
+    mavlink/arariboat/mavlink_msg_param_value.h \
     mavlink/arariboat/mavlink_msg_param_value.h \
     mavlink/arariboat/mavlink_msg_pumps.h \
+    mavlink/arariboat/mavlink_msg_pumps.h \
+    mavlink/arariboat/mavlink_msg_radio_status.h \
     mavlink/arariboat/mavlink_msg_radio_status.h \
     mavlink/arariboat/mavlink_msg_statustext.h \
+    mavlink/arariboat/mavlink_msg_statustext.h \
+    mavlink/arariboat/mavlink_msg_temperatures.h \
     mavlink/arariboat/mavlink_msg_temperatures.h \
     mavlink/arariboat/testsuite.h \
+    mavlink/arariboat/testsuite.h \
+    mavlink/arariboat/version.h \
     mavlink/arariboat/version.h \
     mavlink/checksum.h \
+    mavlink/checksum.h \
+    mavlink/mavlink_conversions.h \
     mavlink/mavlink_conversions.h \
     mavlink/mavlink_helpers.h \
+    mavlink/mavlink_helpers.h \
     mavlink/mavlink_types.h \
+    mavlink/mavlink_types.h \
+    mavlink/protocol.h \
     mavlink/protocol.h \
     mpptwindow.h \
     networkmanager.h \
@@ -104,6 +133,7 @@ DISTFILES += \
     images/graphExp.png \
     images/graphLinear.png \
     images/graphLog.png \
+    mavlink/arariboat.xml \
     mavlink/arariboat.xml \
     mavlink/arariboat.xml:Zone.Identifier
 

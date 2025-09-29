@@ -1,11 +1,13 @@
 #include "batterywindow.h"
 #include "ui_batterywindow.h"
 #include <QDebug>
+#include <QTimer>
 
-BatteryWindow::BatteryWindow(CanController *can, QWidget *parent) :
+BatteryWindow::BatteryWindow(CanController *can, SettingsManager *settings, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::BatteryWindow),
-    can(can)
+    can(can),
+    settings(settings)
 {
     ui->setupUi(this);
 
@@ -25,7 +27,16 @@ BatteryWindow::BatteryWindow(CanController *can, QWidget *parent) :
         }
     }
 
+    ui->soc_batteryLevel->setValue(90);
+
     connect(can, &CanController::BMSDataReceived, this, &BatteryWindow::processBMSPacket);
+
+    connect(&pollTimer, &QTimer::timeout, [=]() {
+        can->pollBMSData();
+    });
+    connect(settings, &SettingsManager::onBMSDelayChanged, this, [=](int delay) {pollTimer.start(delay);});
+
+    pollTimer.start(settings->getBMSPollDelay()); // intervalo de 1000ms = 1 segundo
 }
 
 BatteryWindow::~BatteryWindow()
@@ -36,6 +47,7 @@ BatteryWindow::~BatteryWindow()
 void BatteryWindow::interceptCheckbox(bool value){}
 
 void BatteryWindow::processBMSPacket(const bms_data_t &data){
+    pollTimer.start(settings->getBMSPollDelay());
     ui->voltage_lcd->display(data.voltage_data.cumulative_voltage_decivolts * 0.1);
     ui->current_lcd->display(data.voltage_data.current_deciamps * 0.1);
     ui->temp1_lcd->display(data.temperature_frame[0].raw_temps[0]);
