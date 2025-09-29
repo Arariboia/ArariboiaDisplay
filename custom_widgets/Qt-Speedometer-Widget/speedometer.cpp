@@ -38,8 +38,9 @@ Speedometer::Speedometer(QWidget *parent) :
     m_powerGradient.setColorAt(0, Qt::red);
     m_powerGradient.setColorAt(0.375, Qt::yellow);
     m_powerGradient.setColorAt(0.75, Qt::green);
-    m_unitTextColor = QColor(Qt::white); //QColor(Qt::gray);
-    m_speedTextColor = QColor(Qt::white);//QColor(Qt::black);
+
+    m_unitTextColor = QColor(Qt::gray);
+    m_speedTextColor = QColor(Qt::black);
     m_powerPathColor = QColor(Qt::gray);
 }
 
@@ -71,7 +72,7 @@ void Speedometer::setValues(double speed, double power)
 {
     m_speed = speed;
     QPropertyAnimation *animation = new QPropertyAnimation(this, "power");
-    animation->setDuration(1000);
+    animation->setDuration(200);
     animation->setStartValue(m_power);
     animation->setEndValue(power);
 
@@ -111,6 +112,9 @@ void Speedometer::setPowerPathColor(const QColor &color)
 
 void Speedometer::paintEvent(QPaintEvent *)
 {
+    m_unitTextColor = palette().color(QPalette::WindowText);
+    m_speedTextColor = palette().color(QPalette::Text);
+
     // Limits of external circle
     static const QPoint x1(0, -70);
     static const QPoint x2(0, -90);
