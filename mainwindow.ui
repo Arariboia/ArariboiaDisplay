@@ -25,6 +25,10 @@ QDoubleSpinBox {
     color: #FFFFFF;
 }
 
+Speedometer {
+	color:#FFFFFF;
+}
+
 QSpinBox {
 	background-color: #111111;
     color: #FFFFFF;

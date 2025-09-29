@@ -5,6 +5,7 @@
 #include "batterywindow.h"
 #include "mpptwindow.h"
 #include <QLabel>
+#include <QTime>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -42,8 +43,44 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(network, &NetworkManager::textResponse, this, &MainWindow::processTextResponse);
     connect(network, &NetworkManager::erroOcurred, this, &MainWindow::networkErrorResponse);
 
+    QWidget *container = new QWidget();
+    QLayout *statusLayout = new QHBoxLayout(container);
+    statusLayout->setSpacing(10);
+    clock = new QLabel("00:00");
+    clock->setFont(QFont("SansSerif", 11));
 
-    ui->statusBar->addPermanentWidget(new QLabel("Equipe Arariboia"));
+    QLabel *teamName = new QLabel("Equipe Arariboia");
+    teamName->setFont(QFont("SansSerif", 11));
+
+    QFrame *line = new QFrame();
+    line->setFrameShape(QFrame::VLine);
+
+    statusLayout->addWidget(clock);
+    statusLayout->addWidget(line);
+    statusLayout->addWidget(teamName);
+    ui->statusBar->addPermanentWidget(container);
+    startClock();
+}
+
+void MainWindow::startClock(){
+    QTimer *timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, [this]{
+        QTime time = QTime::currentTime();
+        QString text = time.toString("hh:mm");
+        if ((time.second() % 2) == 0)
+            text[2] = ' ';
+        clock->setText(text);
+
+        // Dark mode at 18h
+
+        if(time.hour() >= 18){
+            this->setStyleSheet(STYLE_DARK_MODE);
+        }
+        else{
+            this->setStyleSheet(STYLE_LIGHT_MODE);
+        }
+    });
+    timer->start(1000);
 }
 
 MainWindow::~MainWindow()
