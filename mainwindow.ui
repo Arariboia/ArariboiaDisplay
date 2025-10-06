@@ -14,49 +14,7 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">/* Fundo preto e texto branco global */
-QWidget {
-    background-color: #000000;
-    color: #FFFFFF;
-}
-
-QDoubleSpinBox {
-	background-color: #111111;
-    color: #FFFFFF;
-}
-
-Speedometer {
-	color:#FFFFFF;
-}
-
-QSpinBox {
-	background-color: #111111;
-    color: #FFFFFF;
-}
-
-/* QLineEdit com borda visível */
-QLineEdit {
-    background-color: #111111;
-    color: #FFFFFF;
-}
-
-/* ProgressBar */
-QProgressBar {
-    background-color: #111111;
-}
-
-/* LCD Number */
-QLCDNumber {
-    background-color: #111111;
-    color: #FFFFFF;; /* verde estilo LCD */
-}
-
-/* Linhas horizontais/verticais (QFrame com shape HLine/VLine) */
-QFrame[frameShape=&quot;4&quot;], /* HLine */
-QFrame[frameShape=&quot;5&quot;]  /* VLine */ {
-    background-color: #555555;
-}
-</string>
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout" stretch="0">

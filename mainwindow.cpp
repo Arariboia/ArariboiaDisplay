@@ -7,6 +7,74 @@
 #include <QLabel>
 #include <QTime>
 
+const QString MainWindow::STYLE_DARK_MODE = QStringLiteral(R"(
+QWidget {
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+QDoubleSpinBox {
+    background-color: #111111;
+    color: #FFFFFF;
+}
+
+QSpinBox {
+    background-color: #111111;
+    color: #FFFFFF;
+}
+
+QLineEdit {
+    background-color: #111111;
+    color: #FFFFFF;
+}
+
+QProgressBar {
+    background-color: #111111;
+}
+
+QLCDNumber {
+    background-color: #111111;
+    color: #FFFFFF;
+}
+
+QSpinBox::up-button {
+        width: 40px;
+}
+QSpinBox::down-button {
+        width: 40px;
+}
+QDoubleSpinBox::up-button {
+        width: 40px;
+}
+QDoubleSpinBox::down-button {
+        width: 40px;
+}
+
+QPushButton:pressed {
+    background-color: #222222;
+}
+
+QFrame[frameShape="4"], /* HLine */
+QFrame[frameShape="5"]  /* VLine */ {
+    background-color: #555555;
+}
+)");
+
+const QString MainWindow::STYLE_LIGHT_MODE = QStringLiteral(R"(
+QSpinBox::up-button {
+        width: 40px;
+    }
+QSpinBox::down-button {
+        width: 40px;
+    }
+QDoubleSpinBox::up-button {
+        width: 40px;
+    }
+QDoubleSpinBox::down-button {
+        width: 40px;
+}
+)");
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -71,13 +139,17 @@ void MainWindow::startClock(){
             text[2] = ' ';
         clock->setText(text);
 
-        // Dark mode at 18h
+        static bool isDarkMode = false;
 
-        if(time.hour() >= 18){
+        // Dark mode at 18h
+        int currentHour = time.hour();
+        if(!isDarkMode && (currentHour >= 18 || currentHour < 7)){
             this->setStyleSheet(STYLE_DARK_MODE);
+            isDarkMode = true;
         }
-        else{
+        else if(isDarkMode && (currentHour >= 7 && currentHour < 18)){
             this->setStyleSheet(STYLE_LIGHT_MODE);
+            isDarkMode = false;
         }
     });
     timer->start(1000);
