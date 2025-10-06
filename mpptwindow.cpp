@@ -37,6 +37,7 @@ void MpptWindow::processMpptStringPacket(const mavlink_mppt_strings_t &data){
     ui->string_2_lcd->display(string2);
     ui->string_3_lcd->display(string3);
     ui->string_4_lcd->display(string4);
+    ui->stringSum_lcd->display(string1 + string2 + string3 + string4);
 }
 
 

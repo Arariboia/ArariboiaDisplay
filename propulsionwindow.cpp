@@ -30,12 +30,16 @@ void PropulsionWindow::processMotorPacket(const motor_data_t &data){
         ui->rpmL_speedometer->setValues(-1 * data.electrical_data.rpm, abs(data.electrical_data.rpm / 4500.0) * 100.0);
         ui->tempMotorL_lcd->display(data.state_data.motor_temp_C);
         ui->tempESCL_lcd->display(data.state_data.controller_temp_C);
+        ui->currentESCL_lcd->display(data.electrical_data.bus_current_dA);
+        ui->accelOpL_lcd->display(data.state_data.accelerator_percent);
     }
     else if(data.motor == RIGHT_MOTOR){
         // right motor
         ui->rpmR_speedometer->setValues(-1 * data.electrical_data.rpm, abs(data.electrical_data.rpm / 4500.0) * 100.0);
         ui->tempMotorR_lcd->display(data.state_data.motor_temp_C);
         ui->tempESCR_lcd->display(data.state_data.controller_temp_C);
+        ui->currentESCR_lcd->display(data.electrical_data.bus_current_dA);
+        ui->accelOpR_lcd->display(data.state_data.accelerator_percent);
     }
 }
 
@@ -46,13 +50,13 @@ void PropulsionWindow::processEletronicPropulsionPacket(const mavlink_eletronic_
 void PropulsionWindow::on_graphL_btn_clicked()
 {
     if(--graphIndex < 0) graphIndex = graphImageArraySize-1;
-    ui->graph_lbl->setText(graphImageArray[graphIndex]);
+//    ui->graph_lbl->setText(graphImageArray[graphIndex]);
 }
 
 void PropulsionWindow::on_graphR_btn_clicked()
 {
     graphIndex = (graphIndex + 1) % graphImageArraySize;
-    ui->graph_lbl->setText(graphImageArray[graphIndex]);
+//    ui->graph_lbl->setText(graphImageArray[graphIndex]);
 }
 
 void PropulsionWindow::on_sendGraph_btn_clicked()
